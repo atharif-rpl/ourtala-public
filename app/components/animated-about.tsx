@@ -1,13 +1,9 @@
 "use client"
 
-import { useEffect, useState, useRef } from "react"
-import Image from "next/image"
+import { useEffect, useState } from "react"
 
-export default function AnimatedAbout() {
-  const [showMore, setShowMore] = useState(false)
+export default function AnimatedAboutRedesign() {
   const [currentImage, setCurrentImage] = useState(0)
-  const aboutRef = useRef<HTMLDivElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
 
   const images = [
     "/images/Galery/galeryabout.webp",
@@ -20,291 +16,167 @@ export default function AnimatedAbout() {
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % images.length)
     }, 4000)
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-          observer.disconnect()
-        }
-      },
-      { threshold: 0.1 },
-    )
-
-    if (aboutRef.current) observer.observe(aboutRef.current)
-
-    return () => {
-      clearInterval(interval)
-      observer.disconnect()
-    }
+    return () => clearInterval(interval)
   }, [images.length])
 
   const nextImage = () => setCurrentImage((prev) => (prev + 1) % images.length)
   const prevImage = () => setCurrentImage((prev) => (prev - 1 + images.length) % images.length)
 
-  const toWebp = (src: string) => src.replace(/\.(jpeg|jpg|png)$/i, ".webp")
-
   return (
     <section
       id="about"
-      ref={aboutRef}
-      // UPDATE: Padding dikurangi di mobile (py-12) agar tidak terlalu boros tempat
-      className="py-12 md:py-16 lg:py-20 bg-gradient-to-br from-emerald-50 via-lime-50 to-teal-50 relative overflow-hidden"
+      className="relative min-h-[100dvh] w-full flex items-center justify-center overflow-hidden bg-[#f6f9f0] font-sans py-24 lg:py-0"
     >
-      {/* Background decorations - Responsive size & opacity */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-10 left-10 w-16 h-16 md:w-20 md:h-20 bg-emerald-200/20 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-20 w-24 h-24 md:w-32 md:h-32 bg-teal-200/15 rounded-full blur-2xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/4 w-12 h-12 md:w-16 md:h-16 bg-lime-300/15 rounded-full blur-lg animate-pulse delay-2000"></div>
-        {/* Hidden on mobile to reduce clutter */}
-        <div className="hidden md:block absolute top-1/4 right-1/3 w-24 h-24 bg-lime-100/10 rounded-full blur-3xl animate-pulse delay-500"></div>
-        <div className="hidden md:block absolute bottom-1/4 left-1/4 w-28 h-28 bg-teal-100/10 rounded-full blur-3xl animate-pulse delay-1500"></div>
+      {/* Background Dot Pattern */}
+      <div 
+        className="absolute inset-0 z-0 opacity-40 pointer-events-none"
+        style={{
+          backgroundImage: "radial-gradient(#c6d8c4 1.5px, transparent 1.5px)",
+          backgroundSize: "24px 24px"
+        }}
+      />
+
+      {/* Faded Background Text */}
+      <div className="absolute top-[10%] left-[-5%] text-[15vw] font-black text-[#0a2f1f]/5 select-none pointer-events-none z-0 tracking-tighter transform -rotate-3">
+        EARTH
+      </div>
+      <div className="absolute bottom-[5%] right-[-5%] text-[15vw] font-black text-[#0a2f1f]/5 select-none pointer-events-none z-0 tracking-tighter transform rotate-3">
+        ORIGIN
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        {/* Header */}
-        <div
-          className={`text-center mb-10 md:mb-16 transition-all duration-1000 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
-          <div className="inline-block mb-3 md:mb-4">
-            <span className="bg-white/80 backdrop-blur-sm text-emerald-800 px-4 py-2 md:px-6 md:py-3 rounded-full text-xs md:text-sm font-medium tracking-wide uppercase border border-emerald-200 shadow-sm">
-              About Us
-            </span>
-          </div>
-          {/* UPDATE: Font size responsive */}
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-800 mb-4 md:mb-6 leading-tight">
-            About Our
-            <span className="text-emerald-600"> Tala</span>
-            <span
-              className="text-2xl md:text-5xl align-top"
-              style={{
-                color: "#8BC34A",
-                textShadow: "0 0 10px rgba(139, 195, 74, 0.5)",
-              }}
-            >
-              *
-            </span>
-          </h2>
-          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed font-light px-2">
-            Mewujudkan masa depan yang lebih hijau melalui inovasi dan komunitas.
-          </p>
-        </div>
-
-        {/* Main Content Grid */}
-        <div className="grid lg:grid-cols-3 gap-8 lg:gap-12 items-start relative">
+      {/* FIX 1: max-w-[90rem] buat ngasih ruang lebih lebar di layar gede, biar gak numpuk di tengah */}
+      <div className="container mx-auto px-4 sm:px-6 relative z-10 w-full max-w-[90rem] h-full flex flex-col justify-center">
+        
+        {/* FIX 2: Proporsi grid dari 5:7 jadi 5:7 tapi dengan gap yang lebih lebar (gap-16) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative">
           
-          {/* Mascot left - UPDATE: Hidden on laptop small (lg), visible only on XL screens (xl/2xl) to prevent overlap */}
-          <div
-            className={`absolute -left-24 top-1/4 hidden 2xl:block transition-all duration-1000 delay-300 ${
-              isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-20"
-            }`}
-            style={{ zIndex: 20 }}
-          >
-            <picture>
-              <source srcSet={toWebp("/images/mascot/mascotbunga.webp")} type="image/webp" />
-              <Image
-                id="mascot-explainer-1"
-                src="/images/mascot/mascotbunga.webp"
-                alt="Mascot explaining community"
-                width={120}
-                height={120}
-                className="object-contain drop-shadow-lg hover:scale-105 transition-transform duration-300"
+          {/* =========================================
+              KOLOM KIRI: TEKS, DESKRIPSI & STATS
+          ========================================= */}
+          <div className="lg:col-span-5 flex flex-col justify-center space-y-8 relative z-30 mt-8 lg:mt-0 lg:pl-10">
+            
+            <div className="relative">
+              {/* Maskot Bunga / Daun */}
+              <img 
+                 src="/images/mascot/mascotbunga.webp" 
+                 alt="Mascot Daun" 
+                 className="absolute -top-12 -left-8 sm:-left-12 w-24 sm:w-28 transform -rotate-12 -z-10 drop-shadow-md hidden sm:block transition-transform hover:rotate-0"
               />
-            </picture>
-          </div>
 
-          {/* Left text content */}
-          <div
-            className={`lg:col-span-2 space-y-6 transition-all duration-1000 delay-200 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
-          >
-            {/* Community Section */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-emerald-100 shadow-lg">
-              <div className="flex items-center mb-4 md:mb-6">
-                <div className="bg-emerald-600 w-2 h-6 md:w-3 md:h-8 rounded-full mr-3 md:mr-4"></div>
-                <h3 className="text-xl md:text-2xl font-bold text-gray-800">Our Community</h3>
+              {/* Tag Ourtala Genesis */}
+              <div className="relative z-10 inline-flex items-center gap-2 bg-[#d6fc71] border-[3px] border-[#0a2f1f] px-4 py-2 rounded-full mb-6 shadow-[4px_4px_0_0_#0a2f1f] transform -rotate-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#f37c7c] border border-[#0a2f1f] animate-pulse"></span>
+                <span className="text-[#0a2f1f] font-black text-[10px] sm:text-xs tracking-widest uppercase">
+                  Ourtala Genesis
+                </span>
               </div>
-              <div className="text-sm md:text-base text-gray-600 leading-relaxed text-justify md:text-left">
-                <p className="mb-4">
-                  Ourtala is a non-profit organization established since April 8, 2021, derived from the words
-                  &quot;Our&quot; and &quot;Bentala,&quot; meaning &quot;Our Earth&quot;. Ourtala aims to raise
-                  environmental awareness, promote sustainable lifestyles, and educate the younger generation.
-                </p>
-                {showMore && (
-                  <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                    <p>
-                      {`Through collaborative initiatives, Ourtala hopes to have a tangible impact in the form of behavioral changes, increased socio-environmental awareness, and the creation of a community that is more aware of the importance of protecting the earth for our shared future.`}
-                    </p>
-                    <p>Symbolizing a shared responsibility for protecting the planet.</p>
-                  </div>
-                )}
-                <button
-                  onClick={() => setShowMore(!showMore)}
-                  className="mt-4 text-emerald-600 hover:text-emerald-700 font-medium transition-colors duration-200 flex items-center text-sm md:text-base"
-                >
-                  {showMore ? (
-                    <>
-                      Show Less
-                      <svg
-                        className="w-4 h-4 ml-1 transform rotate-180"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </>
-                  ) : (
-                    <>
-                      Show More
-                      <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </>
-                  )}
-                </button>
+              
+              <h2 className="relative z-10 text-[3.5rem] sm:text-[4.5rem] lg:text-[5rem] font-black text-[#0a2f1f] leading-[0.9] uppercase tracking-tighter">
+                Guardians <br />
+                Of <span className="font-serif italic font-medium text-emerald-600 normal-case">Nature.</span>
+              </h2>
+            </div>
+
+            {/* Kotak Deskripsi */}
+            <div className="bg-white border-[3px] border-[#0a2f1f] p-6 sm:p-8 rounded-[2rem] shadow-[8px_8px_0_0_#0a2f1f] relative group">
+              <div className="absolute top-4 left-4 w-8 h-2.5 bg-pink-200 border-[2px] border-[#0a2f1f] rounded-full transform -rotate-12"></div>
+              
+              <p className="text-[#0a2f1f]/80 font-bold text-sm sm:text-base leading-relaxed mt-4 relative z-10 italic">
+                <strong className="text-[#0a2f1f] font-black not-italic">Ourtala</strong> (Our Earth) is a non-profit organization established in 2021. We aim to raise environmental awareness and promote sustainable lifestyles through real community actions.
+              </p>
+            </div>
+
+            {/* Kotak Stats */}
+            <div className="grid grid-cols-2 gap-5 sm:gap-6 pt-2">
+              <div className="bg-[#a5f3d5] border-[3px] border-[#0a2f1f] p-5 rounded-[1.5rem] shadow-[5px_5px_0_0_#0a2f1f] transform rotate-1 hover:rotate-0 transition-transform">
+                <h4 className="text-4xl sm:text-5xl font-black text-[#0a2f1f] leading-none mb-1">30+</h4>
+                <p className="text-[#0a2f1f] font-black text-[10px] uppercase tracking-widest">Active Members</p>
+              </div>
+              
+              <div className="bg-[#d4f9e3] border-[3px] border-[#0a2f1f] p-5 rounded-[1.5rem] shadow-[5px_5px_0_0_#0a2f1f] transform -rotate-2 hover:rotate-0 transition-transform">
+                <h4 className="text-4xl sm:text-5xl font-black text-[#0a2f1f] leading-none mb-1">20+</h4>
+                <p className="text-[#0a2f1f] font-black text-[10px] uppercase tracking-widest">Green Projects</p>
               </div>
             </div>
 
-            {/* Vision & Mission - UPDATE: Stacked on mobile, Grid on MD+ */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-emerald-100 shadow-lg h-full">
-                <div className="flex items-center mb-4 md:mb-6">
-                  <div className="bg-emerald-600 w-2 h-6 md:w-3 md:h-8 rounded-full mr-3 md:mr-4"></div>
-                  <h3 className="text-xl md:text-2xl font-bold text-gray-800">Our Vision</h3>
-                </div>
-                <p className="text-sm md:text-base text-gray-600 leading-relaxed text-justify md:text-left">
-                  To spread awareness and remind the public to always take good care of the environment and the Earth,
-                  as it is crucial for our present and future.
-                </p>
-              </div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-emerald-100 shadow-lg h-full">
-                <div className="flex items-center mb-4 md:mb-6">
-                  <div className="bg-emerald-600 w-2 h-6 md:w-3 md:h-8 rounded-full mr-3 md:mr-4"></div>
-                  <h3 className="text-xl md:text-2xl font-bold text-gray-800">Our Mission</h3>
-                </div>
-                <div className="space-y-3 text-sm md:text-base text-gray-600 leading-relaxed text-justify md:text-left">
-                  <p>
-                    To create programs and publish content related to global environmental issues that contribute to
-                    the development of human action towards the environment.
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
 
-          {/* Carousel & Stats - UPDATE: Sticky only on Large screens */}
-          <div
-            className={`lg:sticky lg:top-24 space-y-6 transition-all duration-1000 delay-400 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}
-          >
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 md:p-6 border border-emerald-100 shadow-lg">
-              <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-4 md:mb-6 text-center">Our Community Gallery</h3>
-              <div className="relative overflow-hidden rounded-xl group">
-                <div
-                  className="flex transition-transform duration-500 ease-in-out"
-                  style={{ transform: `translateX(-${currentImage * 100}%)` }}
-                >
-                  {images.map((image, index) => (
-                    <div key={index} className="w-full flex-shrink-0">
-                      <picture>
-                        <source srcSet={toWebp(image)} type="image/webp" />
-                        <Image
-                          src={image}
-                          alt={`Community ${index + 1}`}
-                          width={400}
-                          height={256}
-                          // UPDATE: Height responsive (h-48 on mobile, h-64 on tablet/desktop)
-                          className="w-full h-48 sm:h-56 md:h-64 object-cover rounded-md"
-                        />
-                      </picture>
-                    </div>
-                  ))}
-                </div>
+          {/* =========================================
+              KOLOM KANAN: GALERI POLAROID
+          ========================================= */}
+          <div className="lg:col-span-7 relative flex items-center justify-end mt-16 lg:mt-0 z-20 w-full h-[50vh] sm:h-[60vh] lg:h-full min-h-[400px] lg:pr-10">
+            
+            {/* FIX 3: Tambah max-w-[550px] dan geser ke kanan pakai justify-end di parent */}
+            <div className="relative w-full max-w-[450px] sm:max-w-[550px] flex items-center justify-center">
+
+              {/* Tumpukan Belakang (Pink Transparan) */}
+              <div className="absolute w-[95%] aspect-[4/3] bg-[#f37c7c]/20 border-[3px] border-[#0a2f1f] rounded-[1.5rem] transform rotate-6 translate-x-6 translate-y-4 z-0"></div>
+
+              {/* Frame Utama Galeri */}
+              <div className="bg-white p-4 pb-16 sm:pb-20 border-[4px] border-[#0a2f1f] rounded-[1.5rem] sm:rounded-[2rem] w-full relative z-10 shadow-[10px_10px_0_0_#0a2f1f] transform -rotate-2">
                 
-                {/* Navigation Buttons - Visible on hover/touch */}
-                <button
-                  onClick={prevImage}
-                  className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/70 hover:bg-white text-gray-800 p-1.5 md:p-2 rounded-full shadow-md transition-all duration-200 hover:scale-110 opacity-70 group-hover:opacity-100"
-                >
-                  <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
-                <button
-                  onClick={nextImage}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/70 hover:bg-white text-gray-800 p-1.5 md:p-2 rounded-full shadow-md transition-all duration-200 hover:scale-110 opacity-70 group-hover:opacity-100"
-                >
-                  <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
+                {/* Quote Kuning */}
+                <div className="absolute -top-8 sm:-top-10 -left-6 sm:-left-8 bg-[#fbef7d] border-[3px] border-[#0a2f1f] p-4 rounded-xl shadow-[5px_5px_0_0_#0a2f1f] transform -rotate-6 z-40 max-w-[150px] sm:max-w-[180px]">
+                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#f37c7c] border-[2.5px] border-[#0a2f1f] rounded-full z-50 animate-bounce"></div>
+                   <p className="text-[#0a2f1f] font-black text-[10px] sm:text-xs uppercase tracking-widest leading-snug text-center mt-2">
+                     Act locally, impact globally.
+                   </p>
+                </div>
 
-                {/* Dots */}
-                <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                  {images.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentImage(index)}
-                      className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full transition-all duration-200 ${
-                        index === currentImage
-                          ? "bg-emerald-600 w-4 md:w-6"
-                          : "bg-white/60 hover:bg-white/80"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-              <div className="text-center mt-4">
-                <p className="text-xs text-gray-500 mb-1">
-                  {currentImage + 1} / {images.length}
-                </p>
-                <p className="text-xs md:text-sm text-emerald-800 leading-snug">
-                  Lihat aktivitas dan kegiatan komunitas OurTala.
-                </p>
-              </div>
-            </div>
+                {/* Area Foto */}
+                <div className="relative w-full aspect-[4/3] border-[3px] border-[#0a2f1f] rounded-[1rem] sm:rounded-[1.2rem] overflow-hidden bg-[#0a2f1f]">
+                  <div 
+                    className="flex transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] h-full"
+                    style={{ transform: `translateX(-${currentImage * 100}%)` }}
+                  >
+                    {images.map((img, idx) => (
+                      <img 
+                        key={idx}
+                        src={img} 
+                        alt={`Gallery ${idx}`}
+                        className="w-full h-full object-cover flex-shrink-0"
+                      />
+                    ))}
+                  </div>
 
-            {/* Stats - UPDATE: Side-by-side on mobile too (grid-cols-2) */}
-            <div className="grid grid-cols-2 gap-3 md:gap-4">
-              <div className="bg-gradient-to-br from-emerald-100/80 to-lime-100/80 backdrop-blur-sm p-4 md:p-6 rounded-2xl text-center border border-emerald-200 shadow-lg transform hover:scale-105 transition-transform duration-300">
-                <div className="text-2xl md:text-4xl font-bold text-emerald-700 mb-1 md:mb-2">30+</div>
-                <div className="text-xs md:text-sm font-medium text-gray-700 uppercase tracking-wide">
-                  Members
+                  {/* Tombol Navigasi Hijau (Pindah ke dalam foto biar lebih modern) */}
+                  <button onClick={prevImage} className="absolute left-3 top-1/2 -translate-y-1/2 bg-[#d6fc71] border-[3px] border-[#0a2f1f] w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full text-[#0a2f1f] hover:bg-white transition-all z-30 shadow-[3px_3px_0_0_#0a2f1f] active:shadow-none active:translate-y-1">
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+                  </button>
+                  <button onClick={nextImage} className="absolute right-3 top-1/2 -translate-y-1/2 bg-[#d6fc71] border-[3px] border-[#0a2f1f] w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full text-[#0a2f1f] hover:bg-white transition-all z-30 shadow-[3px_3px_0_0_#0a2f1f] active:shadow-none active:translate-y-1">
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+                  </button>
                 </div>
-              </div>
-              <div className="bg-gradient-to-br from-teal-100/80 to-emerald-100/80 backdrop-blur-sm p-4 md:p-6 rounded-2xl text-center border border-teal-200 shadow-lg transform hover:scale-105 transition-transform duration-300">
-                <div className="text-2xl md:text-4xl font-bold text-teal-700 mb-1 md:mb-2">20+</div>
-                <div className="text-xs md:text-sm font-medium text-gray-700 uppercase tracking-wide">
-                  Projects
+
+                {/* Caption Dokumentasi */}
+                <div className="absolute bottom-5 left-0 w-full px-8 flex justify-between items-center">
+                  <p className="font-serif italic font-bold text-xl sm:text-2xl text-[#0a2f1f]">Moments.</p>
+                  {/* Dots Navigation */}
+                  <div className="flex gap-2">
+                    {images.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentImage(index)}
+                        className={`w-2.5 h-2.5 rounded-full border-[2px] border-[#0a2f1f] transition-all duration-300 ${
+                          index === currentImage ? "bg-[#0a2f1f] w-5" : "bg-transparent hover:bg-gray-300"
+                        }`}
+                      />
+                    ))}
+                  </div>
                 </div>
+
+                {/* FIX 4: Posisi Maskot Pot (Lebih keluar, gak nutupin foto utama) */}
+                <img 
+                   src="/images/mascot/mascotpot.webp" 
+                   alt="Mascot Pot" 
+                   // -right-12 biar dia lebih nongkrong di luar frame
+                   className="absolute -bottom-8 sm:-bottom-12 -right-8 sm:-right-16 w-28 sm:w-36 lg:w-40 z-[60] drop-shadow-[4px_10px_8px_rgba(0,0,0,0.3)] hover:scale-110 transition-transform origin-bottom"
+                />
+
               </div>
             </div>
           </div>
 
-          {/* Mascot right - UPDATE: Hidden on laptop small, visible only on XL screens */}
-          <div
-            className={`absolute -right-24 bottom-1/4 hidden 2xl:block transition-all duration-1000 delay-500 ${
-              isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-20"
-            }`}
-            style={{ zIndex: 20 }}
-          >
-            <picture>
-              <source srcSet={toWebp("/images/mascot/mascotpot.webp")} type="image/webp" />
-              <Image
-                id="mascot-explainer-2"
-                src="/images/mascot/mascotpot.webp"
-                alt="Mascot explaining projects"
-                width={150}
-                height={150}
-                className="object-contain drop-shadow-lg hover:scale-105 transition-transform duration-300"
-              />
-            </picture>
-          </div>
         </div>
       </div>
     </section>

@@ -1,8 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
-// Komponen Image dari Next.js tidak lagi dibutuhkan di sini
-// import Image from "next/image" 
+import { useEffect, useState } from "react"
 
 interface IntroAnimationProps {
   onAnimationComplete: () => void
@@ -13,13 +11,20 @@ export default function IntroAnimation({ onAnimationComplete }: IntroAnimationPr
   const [showShockwave, setShowShockwave] = useState(false)
 
   useEffect(() => {
+    // 1. Slam: Logo menghantam layar
     const timer1 = setTimeout(() => setAnimationStep("slam"), 100)
+    
+    // 2. Vibrate & Shockwave: Getaran setelah hantaman
     const timer2 = setTimeout(() => {
       setAnimationStep("vibrate")
       setShowShockwave(true)
-    }, 1300)
-    const timer3 = setTimeout(() => setAnimationStep("burst"), 2800)
-    const timer4 = setTimeout(onAnimationComplete, 3500)
+    }, 800)
+
+    // 3. Burst: Meledak keluar/transisi ke web utama
+    const timer3 = setTimeout(() => setAnimationStep("burst"), 2400)
+    
+    // 4. Selesai
+    const timer4 = setTimeout(onAnimationComplete, 3200)
 
     return () => {
       clearTimeout(timer1)
@@ -29,84 +34,113 @@ export default function IntroAnimation({ onAnimationComplete }: IntroAnimationPr
     }
   }, [onAnimationComplete])
 
-  const getLogoAnimationClass = () => {
-    switch (animationStep) {
-      case "slam": return "animate-intro-slam"
-      case "vibrate": return "animate-intro-vibrate"
-      case "burst": return "animate-intro-burst"
-      default: return "opacity-0"
-    }
-  }
-
-  const getBgElementClass = () => {
-    if (animationStep === "slam") return "animate-bg-burst-anim"
-    if (animationStep === "vibrate") return "animate-bg-float-anim"
-    if (animationStep === "burst") return "animate-bg-exit-anim"
-    return "opacity-0"
-  }
-
   return (
     <div
-      className={`fixed inset-0 bg-gradient-to-br from-emerald-50 to-lime-50 z-50 transition-all duration-700 ease-in-out ${
-        animationStep === "burst" ? "animate-bg-exit-anim" : "translate-y-0 opacity-100"
+      className={`fixed inset-0 z-[999] transition-all duration-1000 ease-in-out bg-[#f6f9f0] ${
+        animationStep === "burst" ? "translate-y-[-100%] opacity-0" : "translate-y-0 opacity-100"
       }`}
     >
+      {/* Background Dot Pattern */}
+      <div 
+        className="absolute inset-0 z-0 opacity-40 pointer-events-none"
+        style={{
+          backgroundImage: "radial-gradient(#c6d8c4 1.5px, transparent 1.5px)",
+          backgroundSize: "24px 24px"
+        }}
+      />
+
       <div className="w-full h-full flex items-center justify-center relative overflow-hidden">
+        
+        {/* ================= SHOCKWAVE BRUTALIST (Starburst) ================= */}
         {showShockwave && (
-          <div className="absolute w-1 h-1 bg-transparent rounded-full animate-shockwave-anim" style={{ zIndex: 55 }} />
+          <div className="absolute z-10 animate-ping">
+             <svg width="400" height="400" viewBox="0 0 100 100" className="text-[#d6fc71] opacity-40">
+                <path fill="currentColor" d="M50 0 L60 40 L100 50 L60 60 L50 100 L40 60 L0 50 L40 40 Z" />
+             </svg>
+          </div>
         )}
 
-        {/* Elemen latar belakang */}
-        <div className={`absolute w-24 h-24 bg-emerald-300/70 rounded-full blur-xl ${getBgElementClass()}`}
-             style={{ top: "10%", left: "15%", animationDelay: "0.1s" }} />
-        <div className={`absolute w-32 h-32 bg-teal-300/60 rounded-full blur-2xl ${getBgElementClass()}`}
-             style={{ bottom: "20%", right: "10%", animationDelay: "0.2s" }} />
-        <div className={`absolute w-20 h-20 bg-lime-300/80 rounded-full blur-lg ${getBgElementClass()}`}
-             style={{ top: "40%", right: "25%", animationDelay: "0.3s" }} />
-        <div className={`absolute w-28 h-28 bg-emerald-200/50 rounded-full blur-xl ${getBgElementClass()}`}
-             style={{ bottom: "10%", left: "30%", animationDelay: "0.4s" }} />
+        {/* ================= ORNAMEN MELAYANG (Brutalist Shapes) ================= */}
+        <div className={`absolute top-10 left-10 text-6xl text-[#0a2f1f]/10 transform -rotate-12 ${animationStep === "slam" ? "animate-bounce" : ""}`}>✦</div>
+        <div className={`absolute bottom-20 right-10 text-8xl text-[#f37c7c]/10 transform rotate-12 ${animationStep === "slam" ? "animate-bounce" : ""}`}>✿</div>
+        <div className="absolute top-1/2 left-10 w-20 h-20 border-[4px] border-[#0a2f1f]/5 rounded-full border-dashed animate-spin-slow"></div>
 
-        {/* Partikel */}
-        {animationStep === "burst" &&
-          Array.from({ length: 12 }).map((_, i) => {
-            const angle = i * 30
-            const distance = 150
-            const endX = Math.cos((angle * Math.PI) / 180) * distance
-            const endY = Math.sin((angle * Math.PI) / 180) * distance
-
-            const particleStyle = {
-              "--tw-particle-end-x": `${endX}px`,
-              "--tw-particle-end-y": `${endY}px`,
-              animationDelay: `${Math.random() * 0.1}s`,
-              zIndex: 54,
-            } as React.CSSProperties
+        {/* ================= PARTIKEL MELEDAK (BRUTALIST SHAPES) ================= */}
+        {animationStep === "vibrate" &&
+          Array.from({ length: 15 }).map((_, i) => {
+            const angle = i * (360 / 15)
+            const symbols = ["✦", "✿", "▲", "■"]
+            const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)]
+            const colors = ["text-[#d6fc71]", "text-[#fbef7d]", "text-[#f37c7c]", "text-[#0a2f1f]"]
+            const randomColor = colors[Math.floor(Math.random() * colors.length)]
 
             return (
               <div
                 key={i}
-                className="absolute w-3 h-3 bg-amber-400 rounded-full animate-particle-burst-anim"
-                style={particleStyle}
-              />
+                className={`absolute font-black text-xl ${randomColor} animate-particle-pop`}
+                style={{
+                  "--angle": `${angle}deg`,
+                  "--distance": "200px",
+                  zIndex: 40,
+                } as React.CSSProperties}
+              >
+                {randomSymbol}
+              </div>
             )
           })}
 
-        <div className="relative z-50">
-          <div className={getLogoAnimationClass()}>
-            {/* --- PERUBAHAN DI SINI --- */}
-            {/* Menggunakan tag <picture> untuk optimasi gambar logo */}
+        {/* ================= LOGO STICKER CARD ================= */}
+        <div className={`relative z-50 transition-all duration-500 ${
+          animationStep === "slam" ? "scale-100 opacity-100" : 
+          animationStep === "vibrate" ? "animate-wiggle" :
+          "scale-50 opacity-0"
+        }`}>
+          <div className="bg-white border-[6px] border-[#0a2f1f] p-8 rounded-[3rem] shadow-[15px_15px_0_0_#0a2f1f] relative overflow-hidden group">
+            
+            {/* Aksen Selotip Kuning di pojok stiker */}
+            <div className="absolute -top-2 -left-6 w-20 h-8 bg-[#fbef7d] border-[3px] border-[#0a2f1f] transform -rotate-45 z-10"></div>
+            
             <picture>
               <source srcSet="/images/Logo/OURTALA.webp" type="image/webp" />
               <img
                 src="/images/Logo/OURTALA.png"
                 alt="Ourtala Logo"
-                width={208}
-                height={208}
-                className="object-contain drop-shadow-lg"
+                width={200}
+                height={200}
+                className="object-contain relative z-20"
               />
             </picture>
+
+            {/* Label Kecil di Bawah Logo */}
+            <div className="mt-4 text-center">
+               <span className="bg-[#0a2f1f] text-[#d6fc71] px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.3em]">
+                 Est. 2021
+               </span>
+            </div>
           </div>
         </div>
+
       </div>
+
+      <style jsx global>{`
+        @keyframes particle-pop {
+          0% { transform: rotate(var(--angle)) translateY(0) scale(0); opacity: 1; }
+          100% { transform: rotate(var(--angle)) translateY(var(--distance)) scale(1); opacity: 0; }
+        }
+        @keyframes wiggle {
+          0%, 100% { transform: rotate(-2deg) scale(1.05); }
+          50% { transform: rotate(2deg) scale(1.05); }
+        }
+        .animate-particle-pop {
+          animation: particle-pop 1s forwards cubic-bezier(0, 0, 0.2, 1);
+        }
+        .animate-wiggle {
+          animation: wiggle 0.2s infinite;
+        }
+        .animate-spin-slow {
+          animation: spin 8s linear infinite;
+        }
+      `}</style>
     </div>
   )
 }

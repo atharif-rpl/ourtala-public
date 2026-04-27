@@ -32,7 +32,7 @@ interface Article {
 }
 
 // =========================================================================
-// 1. Komponen Modal (Popup)
+// 1. Komponen Modal (Popup) - SOFT BRUTALISM
 // =========================================================================
 interface NewsModalProps {
   article: Article | null
@@ -54,51 +54,59 @@ function NewsModal({ article, onClose }: NewsModalProps) {
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-70 backdrop-blur-sm p-4 transition-opacity duration-300"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#0a2f1f]/60 backdrop-blur-sm p-4 transition-opacity duration-300"
       onClick={onClose}
     >
       <div 
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl transform scale-100 transition-transform duration-300 overflow-hidden"
+        className="relative bg-[#f6f9f0] border-[4px] border-[#0a2f1f] rounded-[2rem] shadow-[12px_12px_0_0_rgba(10,47,31,0.5)] w-full max-w-2xl transform scale-100 transition-transform duration-300 flex flex-col max-h-[90vh]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-6 border-b border-emerald-100 flex justify-between items-center sticky top-0 bg-white z-10">
-          <h3 className="text-xl font-bold text-gray-800 line-clamp-2 pr-4">
+        {/* Aksen Selotip di atas modal */}
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-24 h-8 bg-[#fbef7d] border-[3px] border-[#0a2f1f] rounded-md shadow-sm z-50 transform rotate-2"></div>
+
+        {/* Header Modal */}
+        <div className="p-6 pb-4 border-b-[3px] border-[#0a2f1f] flex justify-between items-start gap-4 sticky top-0 bg-[#c2f298] rounded-t-[1.7rem] z-10">
+          <h3 className="text-xl sm:text-2xl font-black text-[#0a2f1f] leading-tight">
             {article.title}
           </h3>
           <button 
             onClick={onClose} 
-            className="text-gray-500 hover:text-gray-800 transition-colors"
+            className="flex-shrink-0 bg-[#f37c7c] border-[3px] border-[#0a2f1f] w-10 h-10 rounded-full flex items-center justify-center shadow-[2px_2px_0_0_#0a2f1f] text-[#0a2f1f] hover:bg-white transition-colors hover:-translate-y-0.5 active:translate-y-0 active:shadow-none"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 font-bold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
           </button>
         </div>
 
-        <div className="p-6 max-h-[70vh] overflow-y-auto">
+        {/* Konten Modal */}
+        <div className="p-6 overflow-y-auto bg-white flex-grow">
           {article.urlToImage && (
-            <div className="relative h-64 mb-6 rounded-xl overflow-hidden shadow-md">
+            <div className="relative h-48 sm:h-64 mb-6 border-[3px] border-[#0a2f1f] rounded-[1rem] overflow-hidden bg-gray-100">
                 <Image src={article.urlToImage} alt={article.title} fill className="object-cover" />
             </div>
           )}
 
-          <p className="text-sm text-gray-500 mb-4 border-b pb-4 flex items-center gap-2">
-            <span className="font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">{article.source.name}</span> 
-            <span>•</span>
-            <span>{publishedDate}</span>
-          </p>
+          <div className="flex flex-wrap items-center gap-2 mb-4 border-b-[2px] border-dashed border-[#0a2f1f]/20 pb-4">
+            <span className="font-black text-[10px] sm:text-xs text-[#0a2f1f] bg-[#fbef7d] border-[2px] border-[#0a2f1f] px-3 py-1 rounded-full uppercase tracking-wider">
+              {article.source.name}
+            </span> 
+            <span className="text-[#0a2f1f] font-bold">•</span>
+            <span className="text-xs sm:text-sm font-medium text-[#0a2f1f]/70">{publishedDate}</span>
+          </div>
 
-          <p className="text-gray-700 whitespace-pre-line leading-relaxed text-lg">
+          <p className="text-[#0a2f1f]/80 whitespace-pre-line leading-relaxed text-sm sm:text-base font-medium">
             {fullContent}
           </p>
         </div>
 
-        <div className="p-6 border-t border-emerald-100 sticky bottom-0 bg-white z-10">
+        {/* Footer Modal */}
+        <div className="p-5 border-t-[3px] border-[#0a2f1f] bg-white sticky bottom-0 rounded-b-[1.7rem] z-10">
           <a
             href={article.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full bg-emerald-600 text-white py-3 rounded-full font-semibold text-center block hover:bg-emerald-700 transition-all duration-300 shadow-lg shadow-emerald-200"
+            className="w-full bg-[#d6fc71] text-[#0a2f1f] border-[3px] border-[#0a2f1f] py-3.5 rounded-full font-black text-center block uppercase tracking-widest text-sm hover:bg-white shadow-[4px_4px_0_0_#0a2f1f] hover:-translate-y-1 hover:shadow-[6px_6px_0_0_#0a2f1f] active:translate-y-1 active:shadow-none transition-all duration-200"
           >
-            Baca Artikel Lengkap di CNN
+            Baca Lanjut di CNN ➔
           </a>
         </div>
       </div>
@@ -107,7 +115,7 @@ function NewsModal({ article, onClose }: NewsModalProps) {
 }
 
 // =========================================================================
-// 2. Komponen Kartu Berita
+// 2. Komponen Kartu Berita - SOFT BRUTALISM
 // =========================================================================
 function NewsCard({ article, onClick }: { article: Article, onClick: (article: Article) => void }) {
   const publishedDate = new Date(article.publishedAt).toLocaleDateString("id-ID", {
@@ -119,9 +127,9 @@ function NewsCard({ article, onClick }: { article: Article, onClick: (article: A
   return (
     <div 
       onClick={() => onClick(article)}
-      className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden transform hover:scale-[1.02] transition-all duration-300 border border-emerald-100 cursor-pointer group flex flex-col h-full hover:shadow-emerald-100"
+      className="bg-white border-[3px] border-[#0a2f1f] rounded-[1.5rem] shadow-[6px_6px_0_0_#0a2f1f] overflow-hidden transform hover:-translate-y-1 hover:shadow-[8px_8px_0_0_#0a2f1f] transition-all duration-200 cursor-pointer group flex flex-col h-full"
     >
-      <div className="relative h-48 overflow-hidden">
+      <div className="relative h-48 border-b-[3px] border-[#0a2f1f] overflow-hidden bg-[#c2f298]">
         {article.urlToImage ? (
           <Image
             src={article.urlToImage}
@@ -131,32 +139,41 @@ function NewsCard({ article, onClick }: { article: Article, onClick: (article: A
             className="object-cover transition-transform duration-500 group-hover:scale-110"
           />
         ) : (
-          <div className="flex items-center justify-center w-full h-full bg-emerald-50 text-emerald-500">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+          <div className="flex items-center justify-center w-full h-full text-[#0a2f1f]/30">
+            <span className="text-4xl font-black">NO IMAGE</span>
           </div>
         )}
-        <div className="absolute top-4 left-4">
-          <span className="bg-emerald-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-md uppercase tracking-wide">
+        
+        {/* Stiker Kategori */}
+        <div className="absolute top-3 left-3">
+          <span className="bg-[#fbef7d] text-[#0a2f1f] border-[2px] border-[#0a2f1f] px-3 py-1 rounded-full text-[10px] font-black shadow-[2px_2px_0_0_#0a2f1f] uppercase tracking-widest transform -rotate-3 inline-block">
             Lingkungan
           </span>
         </div>
       </div>
-      <div className="p-6 flex flex-col flex-grow">
-        <h3 className="text-lg font-bold text-gray-800 mb-3 group-hover:text-emerald-700 transition-colors line-clamp-2 leading-tight">
+
+      <div className="p-5 flex flex-col flex-grow relative bg-white">
+        <h3 className="text-lg font-black text-[#0a2f1f] mb-3 group-hover:text-emerald-700 transition-colors line-clamp-2 leading-tight">
           {article.title}
         </h3>
-        <p className="text-gray-600 mb-4 text-sm line-clamp-3 flex-grow leading-relaxed">
+        <p className="text-[#0a2f1f]/70 font-medium mb-4 text-xs sm:text-sm line-clamp-3 flex-grow leading-relaxed">
           {article.description || "Klik untuk membaca selengkapnya mengenai berita lingkungan ini."}
         </p>
-        <div className="mt-auto pt-4 border-t border-emerald-50 flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-          <span className="text-xs text-gray-500 font-medium">{publishedDate}</span>
+        
+        <div className="mt-auto pt-4 border-t-[2px] border-dashed border-[#0a2f1f]/20 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="text-lg">📰</span>
+            <span className="text-xs text-[#0a2f1f]/70 font-bold uppercase tracking-wider">{publishedDate}</span>
+          </div>
+          {/* Ikon panah kecil pas di hover */}
+          <div className="w-6 h-6 bg-[#0a2f1f] rounded-full flex items-center justify-center text-[#d6fc71] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+          </div>
         </div>
       </div>
     </div>
   )
 }
-
 
 // =========================================================================
 // 3. Komponen Utama Section
@@ -171,8 +188,6 @@ export default function EnvironmentalNewsSection() {
 
   const NEWS_API_URL = "https://berita-indo-api.vercel.app/v1/cnn-news/";
   
-  // 🔥 DAFTAR KATA KUNCI LINGKUNGAN 🔥
-  // Kita gunakan ini untuk menyaring berita
   const environmentKeywords = [
     "lingkungan", "alam", "hutan", "sampah", "plastik", 
     "iklim", "pemanasan global", "polusi", "banjir", "bencana", 
@@ -196,14 +211,9 @@ export default function EnvironmentalNewsSection() {
       const apiArticles: ApiArticleData[] = result.data || [];
       const tempArticles: Article[] = [];
 
-      // Loop semua data dari API
       for (const article of apiArticles) {
-          
-          // Gabungkan judul dan isi cuplikan untuk pengecekan, jadikan huruf kecil
           const textToCheck = `${article.title} ${article.contentSnippet}`.toLowerCase();
           
-          // 🔥 LOGIKA FILTERING 🔥
-          // Cek apakah ada SALAH SATU kata kunci lingkungan di dalam teks berita
           const isRelatedToEnvironment = environmentKeywords.some(keyword => 
             textToCheck.includes(keyword)
           );
@@ -222,7 +232,6 @@ export default function EnvironmentalNewsSection() {
             });
           }
         
-        // Batasi hanya mengambil 4 berita LINGKUNGAN
         if (tempArticles.length >= 4) break;
       }
       
@@ -238,7 +247,7 @@ export default function EnvironmentalNewsSection() {
     } finally {
       setIsLoading(false);
     }
-  }, [NEWS_API_URL]); // environmentKeywords constant doesn't need to be in dependency if defined inside or outside component properly
+  }, [NEWS_API_URL]);
 
 
   useEffect(() => {
@@ -276,60 +285,79 @@ export default function EnvironmentalNewsSection() {
     <section
       id="env-news"
       ref={sectionRef}
-      className="py-20 bg-gradient-to-br from-emerald-50 via-lime-50 to-teal-50 relative overflow-hidden" 
+      // Tema Soft Brutalism (Krem + Dotted Pattern)
+      className="py-20 lg:py-32 bg-[#f6f9f0] relative overflow-hidden font-sans" 
     >
-      {/* Background Decor */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-10 right-10 w-64 h-64 bg-emerald-200/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 left-20 w-48 h-48 bg-lime-200/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      {/* Background Dot Pattern */}
+      <div 
+        className="absolute inset-0 z-0 opacity-40 pointer-events-none"
+        style={{
+          backgroundImage: "radial-gradient(#c6d8c4 1.5px, transparent 1.5px)",
+          backgroundSize: "24px 24px"
+        }}
+      />
+      
+      {/* Faded Background Text */}
+      <div className="absolute top-[5%] right-[-5%] text-[10vw] font-black text-emerald-900/5 select-none pointer-events-none z-0 tracking-tighter transform rotate-3">
+        NEWS
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10 max-w-7xl">
+        
+        {/* ================= HEADER SECTION ================= */}
         <div
           className={`text-center mb-16 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
         >
+          {/* Label Pill Neo-Brutalist */}
           <div className="inline-block mb-4">
-            <span className="bg-white/80 backdrop-blur-sm text-emerald-800 px-6 py-2.5 rounded-full text-sm font-bold tracking-wide uppercase border border-emerald-200 shadow-sm flex items-center gap-2 mx-auto w-fit">
-               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-               Isu Lingkungan Terkini
+            <span className="bg-[#fbef7d] text-[#0a2f1f] px-5 py-2 rounded-full text-[10px] sm:text-xs font-black tracking-widest uppercase border-[3px] border-[#0a2f1f] shadow-[3px_3px_0_0_#0a2f1f] flex items-center gap-2 mx-auto w-fit transform rotate-1">
+               <span className="w-2.5 h-2.5 rounded-full bg-[#f37c7c] animate-pulse border-[1.5px] border-[#0a2f1f]"></span>
+               Isu Terkini
             </span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6">
+          
+          {/* Title */}
+          <h2 className="text-[2.5rem] sm:text-5xl lg:text-6xl font-black text-[#0a2f1f] mb-4 leading-none uppercase tracking-tighter">
             Kabar
-            <span className="bg-gradient-to-r from-emerald-600 via-lime-600 to-teal-600 bg-clip-text text-transparent">
-              {" "}Bumi Kita
+            <span className="font-serif italic font-medium text-emerald-600 normal-case ml-2">
+              Bumi Kita.
             </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Update terbaru seputar alam, konservasi, dan perubahan iklim yang dikurasi dari CNN Indonesia.
+          <p className="text-sm sm:text-base font-medium text-[#0a2f1f]/70 max-w-2xl mx-auto leading-relaxed">
+            Update terbaru seputar alam, konservasi, dan perubahan iklim yang dikurasi langsung dari CNN Indonesia.
           </p>
         </div>
 
-        {/* Status Loading */}
+        {/* ================= LOADING STATE ================= */}
         {isLoading && (
           <div className="flex flex-col items-center justify-center py-12">
-            <div className="w-16 h-16 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin mb-4"></div>
-            <p className="text-emerald-800 font-medium">Sedang memilah berita lingkungan...</p>
+            <div className="w-16 h-16 border-[4px] border-[#0a2f1f] border-t-[#d6fc71] rounded-full animate-spin mb-4 shadow-[4px_4px_0_0_#0a2f1f]"></div>
+            <p className="text-[#0a2f1f] font-black uppercase tracking-widest text-xs">Mencari Sinyal Hijau...</p>
           </div>
         )}
         
-        {/* Status Error */}
+        {/* ================= ERROR STATE ================= */}
         {error && (
-            <div className="text-center bg-red-50 border border-red-200 text-red-600 px-6 py-8 rounded-2xl max-w-xl mx-auto mb-10 shadow-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 mx-auto mb-3 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                <p className="font-bold mb-1">Terjadi Kesalahan</p>
-                <p className="text-sm opacity-90">{error}</p>
-                <button onClick={() => fetchNews()} className="mt-4 text-sm font-semibold underline hover:text-red-800">Coba Lagi</button>
+            <div className="text-center bg-[#f37c7c] border-[3px] border-[#0a2f1f] text-[#0a2f1f] px-6 py-8 rounded-[1.5rem] max-w-xl mx-auto mb-10 shadow-[6px_6px_0_0_#0a2f1f] transform -rotate-1">
+                <span className="text-4xl block mb-2">📡</span>
+                <p className="font-black text-xl mb-1 uppercase tracking-tight">Koneksi Terputus!</p>
+                <p className="text-sm font-medium opacity-90">{error}</p>
+                <button 
+                  onClick={() => fetchNews()} 
+                  className="mt-5 bg-white border-[2px] border-[#0a2f1f] px-4 py-2 rounded-full text-xs font-black uppercase tracking-wider hover:bg-[#fbef7d] transition-colors shadow-[2px_2px_0_0_#0a2f1f]"
+                >
+                  Coba Tarik Ulang
+                </button>
             </div>
         )}
         
-        {/* Grid Berita */}
+        {/* ================= GRID BERITA ================= */}
         {!isLoading && articles.length > 0 && (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-12">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-16">
             {articles.map((article, index) => (
               <div
                 key={article.url}
-                className={`transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+                className={`transition-all duration-700 h-full ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
                 style={{ transitionDelay: `${index * 150}ms` }}
               >
                 <NewsCard article={article} onClick={setSelectedArticle} />
@@ -338,37 +366,42 @@ export default function EnvironmentalNewsSection() {
           </div>
         )}
         
-        {/* State Kosong (Jika API jalan tapi tidak ada berita lingkungan) */}
+        {/* ================= EMPTY STATE ================= */}
         {!isLoading && !error && articles.length === 0 && (
-            <div className="text-center py-16 px-4">
-                <div className="bg-emerald-100/50 rounded-full p-6 w-fit mx-auto mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <div className="text-center bg-white border-[3px] border-[#0a2f1f] rounded-[2rem] py-16 px-6 max-w-2xl mx-auto shadow-[8px_8px_0_0_#0a2f1f]">
+                <div className="bg-[#c2f298] border-[3px] border-[#0a2f1f] rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 shadow-[4px_4px_0_0_#0a2f1f] transform rotate-6">
+                    <span className="text-3xl">🕊️</span>
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">Belum Ada Berita Lingkungan Terbaru</h3>
-                <p className="text-gray-600 max-w-md mx-auto">
-                    Saat ini feed berita terbaru CNN didominasi topik lain. Silakan coba muat ulang beberapa saat lagi.
+                <h3 className="text-2xl font-black text-[#0a2f1f] mb-3 uppercase tracking-tighter">Belum Ada Kabar Hijau</h3>
+                <p className="text-[#0a2f1f]/70 font-medium max-w-md mx-auto text-sm">
+                    Saat ini feed berita terbaru CNN sedang didominasi topik lain. Silakan coba muat ulang radar kita beberapa saat lagi.
                 </p>
                 <button
                     onClick={() => fetchNews()} 
-                    className="mt-6 text-emerald-600 font-semibold hover:text-emerald-800 flex items-center gap-2 mx-auto"
+                    className="mt-8 bg-[#fbef7d] border-[3px] border-[#0a2f1f] px-6 py-3 rounded-full font-black text-[#0a2f1f] text-xs uppercase tracking-widest hover:bg-white hover:-translate-y-1 transition-all duration-200 shadow-[4px_4px_0_0_#0a2f1f] flex items-center gap-2 mx-auto"
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
-                    Refresh Data
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                    Refresh Radar
                 </button>
             </div>
         )}
 
-        <div className="text-center mt-8">
-            <button
-                onClick={() => fetchNews()} 
-                className="group bg-white text-emerald-800 border border-emerald-200 px-8 py-3 rounded-full font-semibold hover:bg-emerald-600 hover:text-white hover:border-emerald-600 transition-all duration-300 shadow-md flex items-center gap-2 mx-auto"
-              >
-                <span>Muat Ulang Berita</span>
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 group-hover:rotate-180 transition-transform duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
-            </button>
-        </div>
+        {/* ================= TOMBOL MUAT ULANG BAWAH ================= */}
+        {!isLoading && !error && articles.length > 0 && (
+          <div className="text-center mt-8">
+              <button
+                  onClick={() => fetchNews()} 
+                  className="group bg-white text-[#0a2f1f] border-[3px] border-[#0a2f1f] px-8 py-3.5 rounded-full font-black uppercase tracking-widest text-xs hover:bg-[#d6fc71] hover:-translate-y-1 transition-all duration-200 shadow-[6px_6px_0_0_#0a2f1f] active:shadow-none active:translate-y-1 flex items-center gap-3 mx-auto"
+                >
+                  <span className="text-lg">↻</span>
+                  <span>Muat Ulang Berita</span>
+              </button>
+          </div>
+        )}
+
       </div>
       
+      {/* MODAL POPUP */}
       <NewsModal 
         article={selectedArticle} 
         onClose={() => setSelectedArticle(null)} 

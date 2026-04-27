@@ -9,7 +9,8 @@ import {
   FaWhatsapp,
 } from "react-icons/fa"
 
-export function getPlatformIcon(platform: string, size = "w-7 h-7") {
+export function getPlatformIcon(platform: string, size = "w-6 h-6") {
+  // Sedikit tweak size default biar lebih proporsional di dalam kotak stiker
   switch (platform) {
     case "instagram":
       return <FaInstagram className={size} />
@@ -28,21 +29,22 @@ export function getPlatformIcon(platform: string, size = "w-7 h-7") {
   }
 }
 
+// DNA BARU: Nggak ada lagi gradasi. Semuanya warna solid ala kertas karton/stiker!
 export function getPlatformColorClass(platform: string) {
   switch (platform) {
     case "instagram":
-      return "from-pink-500 to-yellow-500"
+      return "bg-[#f37c7c]" // Pink Ourtala
     case "spotify":
-      return "from-green-500 to-emerald-600"
+      return "bg-[#a5f3d5]" // Mint Ourtala
     case "youtube":
-      return "from-red-500 to-rose-600"
+      return "bg-[#ff6b6b]" // Solid Red Brutalist
     case "tiktok":
-      return "from-gray-800 to-gray-900"
+      return "bg-[#fbef7d]" // Yellow Ourtala
     case "linkedin":
-      return "from-blue-600 to-sky-700"
+      return "bg-[#8fc9ff]" // Solid Light Blue Brutalist
     case "whatsapp":
-      return "from-green-500 to-green-600"
+      return "bg-[#d6fc71]" // Lime Ourtala
     default:
-      return "from-gray-400 to-gray-500"
+      return "bg-gray-200"
   }
 }
