@@ -7,7 +7,7 @@ export const teamData: TeamMember[] = [
     name: "Amanda Nashelima",
     role: "Founder & CEO",
     bio: "Passionate environmentalist with 10+ years experience in sustainable agriculture and community development.",
-    image: "/images/ExCo/Amanda-Nashelima.webp",
+    image: "/images/ExCo/Amanda-Nayla-Shelima.webp",
     division: "ExCo",
     social: { instagram: "https://www.instagram.com/amandanashel/" },
   },
