@@ -16,8 +16,8 @@ export const teamData: TeamMember[] = [
     name: "Atharif Pratama Budiman",
     role: "Head Derector & Web Developer",
     bio: "Supporting our research team with experiments and data collection.",
-    image: "/images/Social_Media_Manager/atharif-pratama-budiman.webp",
-    division: "Social Media Manager",
+    image: "/images/ExCo/Atharif-Pratama.webp",
+    division: "ExCo",
     social: { instagram: "https://www.instagram.com/atharif_pratama/"},
   },
  
