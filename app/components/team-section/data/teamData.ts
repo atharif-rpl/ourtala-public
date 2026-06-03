@@ -4,7 +4,7 @@ export const teamData: TeamMember[] = [
   // ExCo
   {
     id: 1,
-    name: "Amanda Nayla Sehilima",
+    name: "Amanda Nayla Shelima",
     role: "Founder & CEO",
     bio: "Passionate environmentalist with 10+ years experience in sustainable agriculture and community development.",
     image: "/images/ExCo/Amanda-Nayla-Shelima.webp",
