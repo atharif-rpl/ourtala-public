@@ -5,6 +5,7 @@ import type { Metadata } from "next"
 import { Geist, Geist_Mono, Modak } from "next/font/google"
 import "./globals.css"
 import { Toaster } from "react-hot-toast"
+import { Analytics } from "@vercel/analytics/next"
 
 
 const geistSans = Geist({
@@ -57,6 +58,7 @@ export default function RootLayout({
             duration: 4000,
           }}
         />
+        <Analytics />
       </body>
     </html>
   )
